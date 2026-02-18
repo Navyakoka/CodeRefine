@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CodeRefine – AI Code Review</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 20px;
+    }
+    h1 {
+      color: #38bdf8;
+    }
+    textarea, select, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    button {
+      background: #38bdf8;
+      color: #000;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    pre {
+      background: #020617;
+      padding: 15px;
+      margin-top: 15px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<h1>CodeRefine – AI Code Review Engine</h1>
+
+<label>Programming Language</label>
+<select id="language">
+  <option>Python</option>
+  <option>Java</option>
+  <option>C++</option>
+  <option>JavaScript</option>
+</select>
+
+<label>Paste Your Code</label>
+<textarea id="code" rows="8"></textarea>
+
+<button onclick="reviewCode()">Analyze Code</button>
+
+<pre id="output">AI response will appear here...</pre>
+
+<script>
+async function reviewCode() {
+  const code = document.getElementById("code").value;
+  const language = document.getElementById("language").value;
+
+  document.getElementById("output").innerText = "Analyzing...";
+
+  const response = await fetch("http://127.0.0.1:8000/review", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code, language })
+  });
+
+  const data = await response.json();
+  document.getElementById("output").innerText = data.analysis;
+}
+</script>
+
+</body>
+</html>
